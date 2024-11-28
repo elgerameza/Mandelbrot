@@ -1,34 +1,65 @@
-#include "ComplexPlane.h"
+#include <SFML/Graphics.hpp>
+#include "complexPlane.h"
+#include <iostream>
 
+int main() {
+    unsigned int screenWidth = sf::VideoMode::getDesktopMode().width / 2;
+    unsigned int screenHeight = sf::VideoMode::getDesktopMode().height / 2;
 
-int main()
-{
-	VideoMode::getDesktopMode().width / 2;
-	VideoMode::getDesktopMode().height / 2;
-	
-	RenderWindow window;
-	ComplexPlane myPlane(0,0);
-	Font myfont;
-	Text mytext;
-	
-	bool update = true;
-	while (window.isOpen())
-	{
-		Event event;
+    sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "Mandelbrot Set Viewer");
 
+    
+    ComplexPlane complexPlane(screenWidth, screenHeight);
 
-		if (event.type == event.Closed) window.close();
-		if (event.type == event.MouseButtonPressed)
-		{
-			if (event.mouseButton.button == Mouse::Left)
-			{
-				cout << "the left button was pressed" << endl;
-				cout << "mouse x: " << event.mouseButton.x << endl;
-				cout << "mouse y: " << event.mouseButton.y << endl;
+    sf::Font font;
+    if (!font.loadFromFile("arial.ttf")) {
+        std::cerr << "Error loading font" << std::endl;
+        return -1;
+    }
+    sf::Text text("", font, 16);
+    text.setFillColor(sf::Color::White);
 
-				update == true;
-			}
-		}
-	}
-	return 0;
+    // Main loop
+    while (window.isOpen()) {
+
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            // Handle window close event
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+
+            if (event.type == sf::Event::MouseButtonPressed) {
+                if (event.mouseButton.button == sf::Mouse::Right) {
+                    complexPlane.zoomOut();
+                    complexPlane.setCenter({ event.mouseButton.x, event.mouseButton.y });
+                }
+                else if (event.mouseButton.button == sf::Mouse::Left) {
+                    complexPlane.zoomIn();
+                    complexPlane.setCenter({ event.mouseButton.x, event.mouseButton.y });
+                }
+            }
+
+            if (event.type == sf::Event::MouseMoved) {
+                complexPlane.setMouseLocation({ event.mouseMove.x, event.mouseMove.y });
+            }
+        }
+
+        // Check if the Escape key is pressed to close the window
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+            window.close();
+        }
+
+        // Update the scene
+        complexPlane.updateRender();
+        complexPlane.loadText(text);
+
+        // Draw the scene
+        window.clear();
+        window.draw(complexPlane);
+        window.draw(text);
+        window.display();
+    }
+
+    return 0;
 }
