@@ -3,8 +3,8 @@
 #include <iostream>
 
 int main() {
-    unsigned int screenWidth = sf::VideoMode::getDesktopMode().width / 2;
-    unsigned int screenHeight = sf::VideoMode::getDesktopMode().height / 2;
+    unsigned int screenWidth = sf::VideoMode::getDesktopMode().width;
+    unsigned int screenHeight = sf::VideoMode::getDesktopMode().height;
 
     sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "Mandelbrot Set Viewer");
 
