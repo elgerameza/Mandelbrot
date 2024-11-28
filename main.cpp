@@ -1,5 +1,5 @@
 #include <SFML/Graphics.hpp>
-#include "complexPlane.h"
+#include "ComplexPlane.h"
 #include <iostream>
 
 int main() {
@@ -9,10 +9,10 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "Mandelbrot Set Viewer");
 
     
-    ComplexPlane complexPlane(screenWidth, screenHeight);
+    ComplexPlane ComplexPlane(screenWidth, screenHeight);
 
     sf::Font font;
-    if (!font.loadFromFile("arial.ttf")) {
+    if (!font.loadFromFile("Arial.ttf")) {
         std::cerr << "Error loading font" << std::endl;
         return -1;
     }
@@ -31,18 +31,18 @@ int main() {
 
             if (event.type == sf::Event::MouseButtonPressed) {
                 if (event.mouseButton.button == sf::Mouse::Right) {
-                    complexPlane.zoomOut();
-                    complexPlane.setCenter({ event.mouseButton.x, event.mouseButton.y });
+                    ComplexPlane.zoomOut();
+                    ComplexPlane.setCenter({ event.mouseButton.x, event.mouseButton.y });
                 }
                 else if (event.mouseButton.button == sf::Mouse::Left) {
-                    complexPlane.zoomIn();
-                    complexPlane.setCenter({ event.mouseButton.x, event.mouseButton.y });
+                    ComplexPlane.zoomIn();
+                    ComplexPlane.setCenter({ event.mouseButton.x, event.mouseButton.y });
                 }
             }
 
             if (event.type == sf::Event::MouseMoved) {
-                complexPlane.setMouseLocation({ event.mouseMove.x, event.mouseMove.y });
-            }
+                ComplexPlane.setMouseLocation({ event.mouseMove.x, event.mouseMove.y });
+             }
         }
 
         // Check if the Escape key is pressed to close the window
@@ -51,12 +51,12 @@ int main() {
         }
 
         // Update the scene
-        complexPlane.updateRender();
-        complexPlane.loadText(text);
+        ComplexPlane.updateRender();
+        ComplexPlane.loadText(text);
 
         // Draw the scene
         window.clear();
-        window.draw(complexPlane);
+        window.draw(ComplexPlane);
         window.draw(text);
         window.display();
     }
